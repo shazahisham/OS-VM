@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <dirent.h>
+#include <stdlib.h>
 
 int main()
 {
@@ -41,6 +42,27 @@ int main()
                 closedir(dp);
             }
         }
+        else if(strcmp(a[0],"echo")==0)
+{
+    int j=1;
+    while(a[j]!=0)
+    {
+        printf("%s ",a[j]);
+        j++;
+    }
+    printf("\n");
+}
+        else if(strcmp(a[0],"environ")==0)
+{
+    extern char **environ;
+    char **e = environ;
+    while(*e!=0)
+    {
+        printf("%s\n",*e);
+        e++;
+    }
+}
+
     }
 
     return 0;
