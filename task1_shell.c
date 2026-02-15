@@ -62,6 +62,26 @@ int main()
         e++;
     }
 }
+        else if(strcmp(a[0],"set")==0)
+{
+    if(a[1]!=0 && a[2]!=0)
+        setenv(a[1],a[2],1);
+}
+        else if(strcmp(a[0],"help")==0)
+{
+    printf("Supported commands:\n");
+    printf("cd dir echo environ set help pause quit\n");
+}
+        else if(strcmp(a[0],"pause")==0)
+{
+    printf("Press Enter to continue...");
+    getchar();
+}
+        else if(strcmp(a[0],"quit")==0)
+{
+    break;
+}
+
 
     }
 
