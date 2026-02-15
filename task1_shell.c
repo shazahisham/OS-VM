@@ -85,7 +85,16 @@ int main()
 }
 else
 {
+    int background = 0;
+
+    if(i>0 && strcmp(a[i-1],"&")==0)
+    {
+    background = 1;
+    a[i-1] = 0;
+    }
+
     pid_t pid = fork();
+
 
     if(pid==0)
     {
@@ -93,6 +102,7 @@ else
     }
     else
     {
+        if(!background)
         wait(NULL);
     }
 }
