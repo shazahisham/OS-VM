@@ -3,6 +3,8 @@
 #include <string.h>
 #include <dirent.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 int main()
 {
@@ -81,8 +83,19 @@ int main()
 {
     break;
 }
+else
+{
+    pid_t pid = fork();
 
-
+    if(pid==0)
+    {
+        execvp(a[0],a);
+    }
+    else
+    {
+        wait(NULL);
+    }
+}
     }
 
     return 0;
