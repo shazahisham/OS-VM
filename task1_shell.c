@@ -98,6 +98,22 @@ else
 
     if(pid==0)
     {
+        int j=0;
+while(a[j]!=0)
+{
+    if(strcmp(a[j],">")==0 && a[j+1]!=0)
+    {
+        freopen(a[j+1],"w",stdout);
+        a[j]=0;
+    }
+    if(strcmp(a[j],"<")==0 && a[j+1]!=0)
+    {
+        freopen(a[j+1],"r",stdin);
+        a[j]=0;
+    }
+    j++;
+}
+
         execvp(a[0],a);
     }
     else
