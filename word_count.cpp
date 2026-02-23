@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include<sstream>
+#include <thread>
 using namespace std;
 
 string cleanWord(string word) {
@@ -15,6 +16,20 @@ string cleanWord(string word) {
     }
     return result;
 }
+
+void countWordsInSegment(vector<string>& lines, int start, int end, unordered_map<string,int>& localMap) {
+    for (int i = start; i < end; i++) {
+        stringstream ss(lines[i]);
+        string word;
+        while (ss >> word) {
+            word = cleanWord(word);
+            if (word != "") {
+                localMap[word]++;
+            }
+        }
+    }
+}
+
 int main() {
     ifstream file("input.txt");
     vector<string> lines;
@@ -27,22 +42,34 @@ int main() {
     for (string l : lines) {
         cout << l << endl;
     }
-    unordered_map<string,int> wordCount;
+int numThreads = 4;
+if (numThreads > lines.size()) numThreads = lines.size();
 
-for (string l : lines) {
-    stringstream ss(l);
-    string word;
-    while (ss >> word) {
-        word = cleanWord(word);
-        if (word != "") {
-            wordCount[word]++;
-        }
+vector<thread> threads;
+vector<unordered_map<string,int>> threadMaps(numThreads);
+
+int totalLines = lines.size();
+int segmentSize = totalLines / numThreads;
+int start = 0;
+
+for (int i = 0; i < numThreads; i++) {
+    int end = (i == numThreads - 1) ? totalLines : start + segmentSize;
+    threads.push_back(thread(countWordsInSegment, ref(lines), start, end, ref(threadMaps[i])));
+    start = end;
+}
+
+for (int i = 0; i < threads.size(); i++) threads[i].join();
+
+unordered_map<string,int> finalMap;
+
+for (int i = 0; i < numThreads; i++) {
+    for (auto pair : threadMaps[i]) {
+        finalMap[pair.first] += pair.second;
     }
 }
 
-for (auto pair : wordCount) {
+for (auto pair : finalMap) {
     cout << pair.first << " " << pair.second << endl;
 }
-
     return 0;
 }
