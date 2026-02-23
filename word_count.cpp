@@ -17,7 +17,7 @@ string cleanWord(string word) {
     return result;
 }
 
-void countWordsInSegment(vector<string>& lines, int start, int end, unordered_map<string,int>& localMap) {
+void countWordsInSegment(vector<string>& lines, int start, int end, unordered_map<string,int>& localMap, int threadId) {
     for (int i = start; i < end; i++) {
         stringstream ss(lines[i]);
         string word;
@@ -27,6 +27,11 @@ void countWordsInSegment(vector<string>& lines, int start, int end, unordered_ma
                 localMap[word]++;
             }
         }
+    }
+
+    cout << "\nThread " << threadId << " intermediate counts:\n";
+    for (auto pair : localMap) {
+        cout << pair.first << " " << pair.second << endl;
     }
 }
 
@@ -54,7 +59,7 @@ int start = 0;
 
 for (int i = 0; i < numThreads; i++) {
     int end = (i == numThreads - 1) ? totalLines : start + segmentSize;
-    threads.push_back(thread(countWordsInSegment, ref(lines), start, end, ref(threadMaps[i])));
+    threads.push_back(thread(countWordsInSegment, ref(lines), start, end, ref(threadMaps[i]), i));
     start = end;
 }
 
