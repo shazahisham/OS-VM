@@ -68,6 +68,7 @@ for (int i = 0; i < numThreads; i++) {
     }
 }
 
+cout << "\nStep 4: Final merged word counts\n";
 for (auto pair : finalMap) {
     cout << pair.first << " " << pair.second << endl;
 }
