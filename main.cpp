@@ -48,8 +48,8 @@ int simulateAging(vector<int> &references, int numFrames) {
                 frames[j].referenceBit = true;
                 hit = true;
                 break;
-            }
-        }
+     }
+ }
 
         if (!hit) {
             pageFaults++;
@@ -88,4 +88,29 @@ int simulateAging(vector<int> &references, int numFrames) {
     }
 
     return pageFaults;
+}
+int main() {
+    string filename;
+    cout << "Enter reference file name: ";
+    cin >> filename;
+
+    vector<int> references = readReferences(filename);
+
+    ofstream output("results.csv");
+    output << "Frames,Faults_per_1000" << endl;
+
+    for (int frames = 1; frames <= 20; frames++) {
+        int faults = simulateAging(references, frames);
+        double faultsPer1000 = (double)faults / references.size() * 1000;
+
+        cout << "Frames: " << frames
+             << "  Faults per 1000 references: "<<endl;
+         cout << fixed << setprecision(2) << faultsPer1000 << endl;
+
+        output << frames << "," << faultsPer1000 << endl;
+    }
+
+    output.close();
+
+    return 0;
 }
