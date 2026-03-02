@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -33,16 +34,4 @@ vector<int> readReferences(string filename) {
 
     file.close();
     return references;
-}
-
-int main() {
-    string filename;
-    cout << "Enter reference file name: ";
-    cin >> filename;
-
-    vector<int> references = readReferences(filename);
-
-    cout << "Total references read: " << references.size() << endl;
-
-    return 0;
 }
