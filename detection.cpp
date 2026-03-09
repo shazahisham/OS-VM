@@ -65,4 +65,17 @@ int main() {
             break;
         }
     }
-
+    if (!deadlock) {
+        cout << "No deadlock was detected" << endl;
+    } else {
+        cout << "Deadlock is detected in processes: ";
+        for (int i = 0; i < n; i++) {
+            if (!finish[i]) {
+                cout << "P" << i << " ";
+            }
+        }
+        cout << endl;
+    }
+        file.close();
+    return 0;
+}
