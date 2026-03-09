@@ -7,3 +7,7 @@ int main() {
 
     int n, m;
     file >> n >> m;
+    vector<int> E(m);
+    vector<vector<int>> C(n, vector<int>(m));
+    vector<vector<int>> R(n, vector<int>(m));
+    vector<int> A(m);
