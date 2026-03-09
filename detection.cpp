@@ -33,4 +33,36 @@ int main() {
 }
     vector<bool> finish(n, false);
     bool progress = true;
-    
+        while (progress) {
+        progress = false;
+
+        for (int i = 0; i < n; i++) {
+            if (!finish[i]) {
+                bool canRun = true;
+
+                for (int j = 0; j < m; j++) {
+                    if (R[i][j] > A[j]) {
+                        canRun = false;
+                        break;
+                    }
+                }
+            if (canRun) {
+                    for (int j = 0; j < m; j++) {
+                        A[j] += C[i][j];
+                    }
+
+                    finish[i] = true;
+                    progress = true;
+                }
+                            }
+        }
+    }
+        bool deadlock = false;
+
+    for (int i = 0; i < n; i++) {
+        if (!finish[i]) {
+            deadlock = true;
+            break;
+        }
+    }
+
