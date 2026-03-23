@@ -49,3 +49,36 @@ float SJF(vector<int> arrival, vector<int> burst, int n) {
 
     return total / n;
 }
+float RoundRobin(vector<int> arrival, vector<int> burst, int n, int quantum) {
+    vector<int> remaining = burst;
+    vector<int> waiting(n, 0);
+
+    int time = 0;
+
+    while (true) {
+        bool done = true;
+
+        for (int i = 0; i < n; i++) {
+            if (remaining[i] > 0) {
+                done = false;
+
+                if (remaining[i] > quantum) {
+                    time += quantum;
+                    remaining[i] -= quantum;
+                } else {
+                    time += remaining[i];
+                    waiting[i] = time - burst[i] - arrival[i];
+                    remaining[i] = 0;
+                }
+            }
+        }
+
+        if (done) break;
+    }
+
+    float total = 0;
+    for (int i = 0; i < n; i++)
+        total += waiting[i];
+
+    return total / n;
+}
