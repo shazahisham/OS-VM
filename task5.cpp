@@ -82,3 +82,34 @@ float RoundRobin(vector<int> arrival, vector<int> burst, int n, int quantum) {
 
     return total / n;
 }
+int main() {
+    int n = 4;
+
+    vector<int> arrival = {0, 1, 2, 3};
+    vector<int> burst = {5, 3, 8, 6};
+
+    float fcfs = FCFS(arrival, burst, n);
+    float sjf = SJF(arrival, burst, n);
+    float rr = RoundRobin(arrival, burst, n, 2);
+
+    cout << "Average Waiting Times:\n";
+    cout << "FCFS: " << fcfs << endl;
+    cout << "SJF: " << sjf << endl;
+    cout << "RR : " << rr << endl;
+
+    cout << "\nBar Chart:\n";
+
+    cout << "FCFS: ";
+    for (int i = 0; i < fcfs; i++) cout << "*";
+    cout << endl;
+
+    cout << "SJF : ";
+    for (int i = 0; i < sjf; i++) cout << "*";
+    cout << endl;
+
+    cout << "RR  : ";
+    for (int i = 0; i < rr; i++) cout << "*";
+    cout << endl;
+
+    return 0;
+}
