@@ -24,3 +24,15 @@ int main(int argc, char* argv[]) {
         cout << "Bin width must be positive.\n";
         return 1;
     }
+    map<long long, int> histogram;
+
+    for (const auto& entry : recursive_directory_iterator(path)) {
+        try {
+            if (is_regular_file(entry.path())) {
+                long long size = file_size(entry.path());
+                long long binStart = (size / binWidth) * binWidth;
+                histogram[binStart]++;
+            }
+        } catch (...) {
+        }
+    }
