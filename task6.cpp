@@ -36,3 +36,19 @@ int main(int argc, char* argv[]) {
         } catch (...) {
         }
     }
+    cout << "\nFile Size Histogram:\n";
+
+    if (histogram.empty()) {
+        cout << "No files found.\n";
+    } else {
+        for (auto p : histogram) {
+            long long start = p.first;
+            long long end = start + binWidth - 1;
+
+            cout << "[" << start << " - " << end << "] : "
+                 << p.second << endl;
+        }
+    }
+
+    return 0;
+}
