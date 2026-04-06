@@ -53,7 +53,9 @@ int main() {
         send(clientSocket, msg.c_str(), msg.length(), 0);
     }
 
-    close(clientSocket);
-    t.join();
-    return 0;
+shutdown(clientSocket, SHUT_RDWR);
+close(clientSocket);
+t.join();
+
+return 0;
 }
