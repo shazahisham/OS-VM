@@ -54,5 +54,6 @@ int main() {
     }
 
     close(clientSocket);
+    t.join();
     return 0;
 }
