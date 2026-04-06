@@ -64,3 +64,34 @@ void handleClient(int clientSocket) {
 
     close(clientSocket);
 }
+int main() {
+    int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+
+    sockaddr_in serverAddr{};
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(54000);
+    serverAddr.sin_addr.s_addr = INADDR_ANY;
+
+    bind(serverSocket, (sockaddr*)&serverAddr, sizeof(serverAddr));
+    listen(serverSocket, 5);
+
+    cout << "Server running on port 54000...\n";
+
+    while (true) {
+        sockaddr_in clientAddr{};
+        socklen_t clientSize = sizeof(clientAddr);
+
+        int clientSocket = accept(serverSocket, (sockaddr*)&clientAddr, &clientSize);
+
+        {
+            lock_guard<mutex> lock(clientsMutex);
+            clients.push_back(clientSocket);
+        }
+
+        thread t(handleClient, clientSocket);
+        t.detach();
+    }
+
+    close(serverSocket);
+    return 0;
+}
