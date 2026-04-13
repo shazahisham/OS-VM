@@ -97,3 +97,67 @@ string storePassword(PasswordRecord record) {
     ss << ":" << record.hash;
     return ss.str();
 }
+
+bool checkPassword(string inputPassword, string savedData) {
+    int pos = savedData.find(':');
+
+    string saltPart = savedData.substr(0, pos);
+    string hashPart = savedData.substr(pos + 1);
+
+    unsigned short salt;
+    stringstream ss;
+    ss << hex << saltPart;
+    ss >> salt;
+
+    PasswordRecord testRecord = encryptPassword(inputPassword, salt);
+
+    return testRecord.hash == hashPart;
+}
+
+int main() {
+    vector<string> passwords = {
+        "orange12",
+        "delta99",
+        "sunRise7",
+        "cairo2026",
+        "desLab01",
+        "secureMe",
+        "passKey1",
+        "zebra88",
+        "moon1234",
+        "taskeight"
+    };
+
+    vector<string> encryptedPasswords;
+
+    cout << "Generated encrypted passwords:" << endl;
+    cout << "-----------------------------" << endl;
+
+    for (int i = 0; i < passwords.size(); i++) {
+        unsigned short salt = generateSalt();
+        PasswordRecord record = encryptPassword(passwords[i], salt);
+        string stored = storePassword(record);
+
+        encryptedPasswords.push_back(stored);
+
+        cout << passwords[i] << " -> " << stored << endl;
+    }
+
+    cout << endl;
+    cout << "Password validation test:" << endl;
+    cout << "-------------------------" << endl;
+
+    if (checkPassword("orange12", encryptedPasswords[0])) {
+        cout << "orange12 is VALID for record 1" << endl;
+    } else {
+        cout << "orange12 is INVALID for record 1" << endl;
+    }
+
+    if (checkPassword("wrongpass", encryptedPasswords[0])) {
+        cout << "wrongpass is VALID for record 1" << endl;
+    } else {
+        cout << "wrongpass is INVALID for record 1" << endl;
+    }
+
+    return 0;
+}
